@@ -1,128 +1,120 @@
-import React, { FC } from "react"
-import { View, ViewStyle, TextStyle, ImageStyle, SafeAreaView } from "react-native"
-import { StackScreenProps } from "@react-navigation/stack"
-import { observer } from "mobx-react-lite"
-import {
-  Button,
-  Header,
-  Screen,
-  Text,
-  GradientBackground,
-  AutoImage as Image,
-} from "../../components"
-import { color, spacing, typography } from "../../theme"
-import { NavigatorParamList } from "../../navigators"
+/* eslint-disable react-native/no-color-literals */
+/* eslint-disable react-native/no-inline-styles */
+import React from "react"
+import axios from "axios"
+import { View, Text, Image, SafeAreaView, StyleSheet, FlatList, Button, Alert } from "react-native"
+import { Searchbar } from "react-native-paper"
 
-const bowserLogo = require("./bowser.png")
 
-const FULL: ViewStyle = { flex: 1 }
-const CONTAINER: ViewStyle = {
-  backgroundColor: color.transparent,
-  paddingHorizontal: spacing[4],
-}
-const TEXT: TextStyle = {
-  color: color.palette.white,
-  fontFamily: typography.primary,
-}
-const BOLD: TextStyle = { fontWeight: "bold" }
-const HEADER: TextStyle = {
-  paddingTop: spacing[3],
-  paddingBottom: spacing[4] + spacing[1],
-  paddingHorizontal: 0,
-}
-const HEADER_TITLE: TextStyle = {
-  ...TEXT,
-  ...BOLD,
-  fontSize: 12,
-  lineHeight: 15,
-  textAlign: "center",
-  letterSpacing: 1.5,
-}
-const TITLE_WRAPPER: TextStyle = {
-  ...TEXT,
-  textAlign: "center",
-}
-const TITLE: TextStyle = {
-  ...TEXT,
-  ...BOLD,
-  fontSize: 28,
-  lineHeight: 38,
-  textAlign: "center",
-}
-const ALMOST: TextStyle = {
-  ...TEXT,
-  ...BOLD,
-  fontSize: 26,
-  fontStyle: "italic",
-}
-const BOWSER: ImageStyle = {
-  alignSelf: "center",
-  marginVertical: spacing[5],
-  maxWidth: "100%",
-  width: 343,
-  height: 230,
-}
-const CONTENT: TextStyle = {
-  ...TEXT,
-  color: "#BAB6C8",
-  fontSize: 15,
-  lineHeight: 22,
-  marginBottom: spacing[5],
-}
-const CONTINUE: ViewStyle = {
-  paddingVertical: spacing[4],
-  paddingHorizontal: spacing[4],
-  backgroundColor: color.palette.deepPurple,
-}
-const CONTINUE_TEXT: TextStyle = {
-  ...TEXT,
-  ...BOLD,
-  fontSize: 13,
-  letterSpacing: 2,
-}
-const FOOTER: ViewStyle = { backgroundColor: "#20162D" }
-const FOOTER_CONTENT: ViewStyle = {
-  paddingVertical: spacing[4],
-  paddingHorizontal: spacing[4],
+const Styles = StyleSheet.create({
+  CONTAINER: { backgroundColor: "white", flex: 1, paddingHorizontal: 15 },
+  DIVIDER: { backgroundColor: "gray", height: 1, marginTop: 10, width: "100%" },
+  FULL: { flex: 1 },
+  HEADINGTEXT: { alignSelf: "center", color: "black", fontSize: 30 },
+  SEARCHBAR: {marginVertical: 30},
+  SIDETEXT: { color: "black", fontSize: 16 }
+  })
+
+interface MovieInfo {
+  Title: string;
+  Year: string;
+  imdbID: string;
+  Type: string;
+  Poster: string;
 }
 
-export const WelcomeScreen: FC<StackScreenProps<NavigatorParamList, "welcome">> = observer(
-  ({ navigation }) => {
-    const nextScreen = () => navigation.navigate("demo")
 
+export const WelcomeScreen = () => {
+  const [ pageNumber, setPageNumber ] = React.useState(1)
+  const [ searchQuery, setSearchQuery ] = React.useState("");
+  const [ data, setData ] = React.useState<MovieInfo[]>([]);
+  const [ movieReviews, setMovieReviews ] = React.useState(0);
+
+  const SearchResultView = (item: any) => {
+    // render flatlist data
     return (
-      <View testID="WelcomeScreen" style={FULL}>
-        <GradientBackground colors={["#422443", "#281b34"]} />
-        <Screen style={CONTAINER} preset="scroll" backgroundColor={color.transparent}>
-          <Header headerTx="welcomeScreen.poweredBy" style={HEADER} titleStyle={HEADER_TITLE} />
-          <Text style={TITLE_WRAPPER}>
-            <Text style={TITLE} text="Your new app, " />
-            <Text style={ALMOST} text="almost" />
-            <Text style={TITLE} text="!" />
-          </Text>
-          <Text style={TITLE} preset="header" tx="welcomeScreen.readyForLaunch" />
-          <Image source={bowserLogo} style={BOWSER} />
-          <Text style={CONTENT}>
-            This probably isn't what your app is going to look like. Unless your designer handed you
-            this screen and, in that case, congrats! You're ready to ship.
-          </Text>
-          <Text style={CONTENT}>
-            For everyone else, this is where you'll see a live preview of your fully functioning app
-            using Ignite.
-          </Text>
-        </Screen>
-        <SafeAreaView style={FOOTER}>
-          <View style={FOOTER_CONTENT}>
-            <Button
-              testID="next-screen-button"
-              style={CONTINUE}
-              textStyle={CONTINUE_TEXT}
-              tx="welcomeScreen.continue"
-              onPress={nextScreen}
-            />
-          </View>
-        </SafeAreaView>
+      <View key={item.index}>
+      <Text style={Styles.HEADINGTEXT}>{item.item.Title}</Text>
+      <Image source={{ uri: item.item.Poster}} style={{height: 300, width: "100%"}}/>
+      <Text style={Styles.SIDETEXT}>YEAR: {item.item.Year}</Text>
+      <Text style={Styles.SIDETEXT}>CATEGORY: {item.item.Type}</Text>
+      <Text style={Styles.SIDETEXT}>IMDB ID: {item.item.imdbID}</Text>
       </View>
     )
-  },
-)
+    }
+
+    const FlatListSeparator = () => {
+      // divider between each items
+      return (
+      <View style={Styles.DIVIDER} />
+      )
+    }
+
+    const apiCall = async () => {
+      // api call to get data 
+      const apiKey = "9e22caae"
+      const title = "titanic"
+      const page = 1
+      try {
+        Alert.alert("1")
+        const response = await axios.get(`https://www.omdbapi.com/?apikey=${apiKey}&s=${title}&type=movie&page=${page}`)
+       Alert.alert(JSON.stringify(response))
+        if(response.data.Search){
+          setData([...data, ...response.data.Search])
+          setMovieReviews(response.data.totalResults)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+  // const paginationFunc = () =>{
+  //   // pagination
+  //   setPageNumber(pageNumber+1)
+  //   apiCall()
+  // }
+
+  // const clearRecord=()=>{
+  //   // clear all movie records
+  //   setSearchQuery("")
+  //   setData([])
+  //   setMovieReviews(0)
+  //   setPageNumber(1)
+  // }
+
+return ( 
+<SafeAreaView testID="WelcomeScreen" style={Styles.FULL}>
+  <View style={Styles.CONTAINER}>
+    <Text style={Styles.HEADINGTEXT}>Search Movies</Text>
+    {/* didnt load icons so the left icon on Search bar is Clear Record functionality */}
+      {/* <Searchbar
+        placeholder="Enter Movie Name"
+        onChangeText={(item) => setSearchQuery(item)}
+        value={searchQuery}
+        style={Styles.SEARCHBAR}
+        onIconPress={() => clearRecord()}
+      /> */}
+      <Button
+        onPress={apiCall}
+        title="Search"
+        color="#841584"
+        accessibilityLabel="Learn more about this purple button"
+      />
+{/* {data.length === 0 ? 
+      <Text style={{alignSelf: "center", marginTop: 150, fontStyle: "italic"}}>Nothing to display, use search bar</Text>
+      :
+      <>  */}
+      <Text style={{ marginBottom: 30, fontWeight: "bold" }}>Total Results: {movieReviews}</Text>
+      <FlatList
+        data={data}
+        renderItem={SearchResultView}
+        keyExtractor={(item) => item.imdbID}
+        // onEndReached={paginationFunc}
+        // ItemSeparatorComponent={FlatListSeparator}
+      />
+      {/* </>
+} */}
+  </View>
+</SafeAreaView>     
+    )
+  }

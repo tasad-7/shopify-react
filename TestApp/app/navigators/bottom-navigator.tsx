@@ -3,14 +3,11 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { FeedScreen } from "../screens/bottom-tab-screens/feed-screen"
 import { ProfileScreen } from "../screens/bottom-tab-screens/profile-screen"
-import { NavigationContainer } from "@react-navigation/native"
-import { SetGoalScreen } from "../screens/bottom-tab-screens/set-goal-screen"
 
 
-export const AppStack = () => {
+export const BottomTabNavigator = () => {
   const Tab = createBottomTabNavigator()
   return (
-    <NavigationContainer>
       <Tab.Navigator
       initialRouteName="FeedScreen"
       // tabBarOptions={{
@@ -22,29 +19,27 @@ export const AppStack = () => {
         name="FeedScreen"
         component={FeedScreen}
         options={{
-            tabBarLabel: "",
-            tabBarLabelStyle: {color: 'black'},
+            tabBarLabel: "Feed",
             // eslint-disable-next-line react/display-name
             tabBarIcon: ({ focused }: any) => (
                 <MaterialCommunityIcons
-                  name="format-list-bulleted"
-                  size={30}
-                  color={focused === true ? "gold" : "grey"} />
+                  name="account"
+                  size={25}
+                  color={focused === true ? "yellow" : "grey"} />
             ),
           }}
       />
-       <Tab.Screen
-        name="SetGoalScreen"
-        component={SetGoalScreen}
+        <Tab.Screen
+        name="FeedScreen"
+        component={FeedScreen}
         options={{
-          tabBarLabel: "",
-          tabBarLabelStyle: {color: 'black'},
+            tabBarLabel: "Feed",
             // eslint-disable-next-line react/display-name
             tabBarIcon: ({ focused }: any) => (
                 <MaterialCommunityIcons
-                  name="plus-circle"
-                  size={35}
-                  color={focused === true ? "green" : "grey"} />
+                  name="account"
+                  size={25}
+                  color={focused === true ? "yellow" : "grey"} />
             ),
           }}
       />
@@ -52,19 +47,16 @@ export const AppStack = () => {
         name="ProfileScreen"
         component={ProfileScreen}
         options={{
-          tabBarLabel: "",
-          tabBarLabelStyle: {color: 'black'},
+          tabBarLabel: "Profile",
           // eslint-disable-next-line react/display-name
           tabBarIcon: ({ focused }: any) => (
               <MaterialCommunityIcons
                 name="account"
-                size={35}
-                color={focused === true ? "blue" : "grey"} />
+                size={25}
+                color={focused === true ? "yellow" : "grey"} />
           ),
         }}
       />
     </Tab.Navigator>
-    </NavigationContainer>
   )
 }
-
