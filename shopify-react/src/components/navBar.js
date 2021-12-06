@@ -10,7 +10,7 @@ const NavBar = () => {
     return (
     <Flex flexDirection="row" justifyContent="space-between" padding="2rem" backgroundColor="#FFA8E2">
        <Icon fill="white" cursor="pointer" as={MdMenu} w={30} h={30}/>
-       {/* <Image src={} w={100} h={100}/> */}
+       <Text>LOGO</Text>
        <Icon fill="white" cursor="pointer" as={MdShoppingBasket} w={30} h={30} onClick={()=>openCart()}/>
     </Flex>
     )
