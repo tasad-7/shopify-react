@@ -1,12 +1,13 @@
-import React, { useContext, useEffect } from "react"
+import React from "react"
 import { Link } from "react-router-dom"
 import { ShopContext } from "../context/shopContext"
+import { Box, Grid, Text, Image } from "@chakra-ui/react"
 
 const Home = () => {
 
-const { fetchAllProducts, products } = useContext(ShopContext)
+const { fetchAllProducts, products } = React.useContext(ShopContext)
 
-useEffect(()=>{
+React.useEffect(()=>{
     fetchAllProducts()
 }, [fetchAllProducts])
 
@@ -14,13 +15,25 @@ useEffect(()=>{
 if(!products) return <div>loading...</div>
 
     return (
-        <div>
+        <Box>
+            <Grid templateColumns="repeat(3,1fr)">
             {products.map((product) => 
             (
-              <Link to={`/products/${product.handle}`} key={product.title}>{product.title}</Link>
+              <Link to={`/products/${product.handle}`} key={product.id}>
+                <Box _hover={{ opacity: "80%" }} textAlign="center">
+                <Image src={product.images[0].src}/>
+                <Text>
+                {product.title}
+                </Text>
+                <Text>
+                ${product.variants[0].price}
+                </Text>
+                </Box>
+              </Link>
             )
             )}
-        </div>
+            </Grid>
+        </Box>
     )
 }
 export default Home
