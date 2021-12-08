@@ -4,6 +4,7 @@ import Home from "./pages/Home"
 import NavBar from "./components/navBar"
 import NavMenu from "./components/navMenu";
 import Cart from "./components/cart"
+import Footer from "./components/footer"
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/products/:handle" element={<ProductPage />} />
         <Route path="/" element={<Home />} />
         </Routes>
+        <Footer />
       </Router>
     </div>
   );
