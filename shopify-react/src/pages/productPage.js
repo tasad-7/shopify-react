@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { ShopContext } from "../context/shopContext";
-import { Box, Grid, Image, Text, Button, Heading, Flex, Center } from "@chakra-ui/react";
+import { Box, Grid, Image, Text, Button, Heading } from "@chakra-ui/react";
 
 const ProductPage = () => {
 
