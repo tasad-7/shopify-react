@@ -6,7 +6,7 @@ const Footer = () => {
     return (
         <Box backgroundColor="#FFA8E2">
             <Grid templateColumns={["repeat(1, 1fr)", "repeat(3, 1fr)"]} color="white" fontWeight="bold">
-                <Image src={require("../assets/Bath-Bombs.jpg")}/>
+                <Image src={"https://picsum.photos/200/300"}/>
                 <VStack p="2rem">
                     <Link to="/">The Green Blast</Link>
                     <Link to="/">The Blue Berry</Link>

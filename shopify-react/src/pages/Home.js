@@ -1,4 +1,5 @@
 import React from "react"
+import Hero from "../components/Hero"
 import { Link } from "react-router-dom"
 import { ShopContext } from "../context/shopContext"
 import { Box, Grid, Text, Image } from "@chakra-ui/react"
@@ -16,6 +17,7 @@ if(!products) return <div>loading...</div>
 
     return (
         <Box>
+          <Hero />
             <Grid templateColumns="repeat(3,1fr)">
             {products.map((product) => 
             (
