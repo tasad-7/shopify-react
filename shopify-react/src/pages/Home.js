@@ -3,6 +3,7 @@ import Hero from "../components/Hero"
 import { Link } from "react-router-dom"
 import { ShopContext } from "../context/shopContext"
 import { Box, Grid, Text, Image } from "@chakra-ui/react"
+import ImageWithText from "../components/imageWithText"
 
 const Home = () => {
 
@@ -35,6 +36,8 @@ if(!products) return <div>loading...</div>
             )
             )}
             </Grid>
+            <ImageWithText image="https://picsum.photos/200" heading="Heading" text="Click me to buy ...."/>
+            <ImageWithText reverse image="https://picsum.photos/200" heading="Heading" text="Click me to buy ...."/>
         </Box>
     )
 }
